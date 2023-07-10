@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap');
+
+* {
+    --atena-background: #faeeef;
+    --atena-background-rgb: 250, 234, 235;
+    --atena-background-darker: #f1cbd5;
+    --atena-background-darker-rgb: 253, 216, 223;
+    --atena-border: #f8b1bf;
+    --atena-border-rgb: 248, 177, 191;
+    --atena-disabled: #e3909e;
+    --atena-disabled-rgb: 222, 119, 139;
+    --atena-primary: #a24b5c;
+    --atena-primary-rgb: 211, 111, 130;
+    --atena-hover: #733743;
+    --atena-hover-rgb: 178, 89, 105;
+    --atena-text: #52232b;
+    --atena-text-rgb: 143, 66, 80;
+    --atena-translucent: rgba(248, 177, 191, 0.17);
+
+    --bs-body-bg: var(--atena-background);
+    --bs-body-bg-rgb: var(--atena-background-rgb);
+    --bs-body-color: var(--atena-text);
+    --bs-body-color-rgb: var(--atena-text-rgb);
+    --bs-tertiary-bg: var(--atena-background-darker);
+    --bs-tertiary-bg-rgb: var(--atena-background-darker-rgb);
+    --bs-border-width: 1px;
+    --bs-border-color-translucent: var(--atena-translucent);
+
+
+    font-family: 'DM Sans', 'Noto Sans Thai', 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+
+    transition: all .2s!important;
+}
+
+body {
+    background-color: var(--atena-background);
+}
+
+::selection {
+    color: var(--atena-background);
+    background: rgba(var(--atena-primary-rgb), 0.7);
+}
+
+::placeholder {
+    color: var(--atena-disabled)!important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--atena-primary);
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--atena-primary);
+    --bs-btn-border-color: var(--atena-primary);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--atena-hover);
+    --bs-btn-hover-border-color: var(--atena-hover);
+    --bs-btn-focus-shadow-rgb: var(--atena-hover-rgb);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--atena-hover);
+    --bs-btn-active-border-color: var(--atena-hover);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--atena-disabled);
+    --bs-btn-disabled-border-color: var(--atena-disabled);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--atena-primary);
+    --bs-btn-border-color: var(--atena-primary);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--atena-hover);
+    --bs-btn-hover-border-color: var(--atena-hover);
+    --bs-btn-focus-shadow-rgb: var(--atena-hover-rgb);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--atena-hover);
+    --bs-btn-active-border-color: var(--atena-hover);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: var(--atena-disabled);
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #0d6efd;
+    --bs-gradient: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--atena-hover);
+    filter: brightness(85%);
+    transition: all .2s;
+    box-shadow: 0 0 15px var(--atena-hover);
+}
+
+.btn-primary:focus {
+    outline: none;
+    background-color: var(--atena-hover);
+    filter: brightness(85%);
+}
+
+a {
+    color: var(--atena-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--atena-hover);
+}
+
+.breadcrumb-item.active {
+    color: var(--atena-text);
+}
+
+.form-control {
+    color: var(--bs-body-color);
+    background-color: var(--atena-background);
+    border: var(--bs-border-width) solid var(--atena-border);
+}
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--atena-background);
+    border-color: var(--atena-border);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(var(--atena-border-rgb), 0.5);
+}
+
+.form-text {
+    color: var(--atena-text);
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: var(--atena-background);
+    --bs-dropdown-link-color: var(--bs-body-color);
+    --bs-dropdown-link-hover-color: var(--bs-body-color);
+    --bs-dropdown-link-hover-bg: var(--bs-tertiary-bg);
+    --bs-dropdown-link-active-color: var(--atena-background);
+    --bs-dropdown-link-active-bg: var(--atena-disabled);
+    --bs-dropdown-link-disabled-color: #adb5bd;
+    --bs-dropdown-header-color: var(--atena-primary);
+}
+
+.badge-atena {
+    color: var(--atena-background);
+    background-color: var(--atena-hover);
+}
+
+.navbar-brand {
+    color: var(--atena-text);
+}
+
+.navbar-brand:hover {
+    color: var(--atena-hover);
+}
+
+.nav-link {
+    color: var(--atena-text);
+}
+
+.nav-link.show {
+    color: var(--atena-text);
+}
+
+.nav-link:hover {
+    color: var(--atena-hover);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: var(--atena-background);
+    background-color: var(--atena-hover);
+}
+
+.nav-pills .nav-link.active:focus, .nav-pills .show>.nav-link:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--atena-hover-rgb), 0.5);
+}
+
+.nav-pills .nav-link.active:hover, .nav-pills .show>.nav-link:hover {
+    color: var(--atena-background);
+    background-color: var(--atena-hover);
+}
+
+.list-group-item.active {
+    color: var(--atena-background);
+    background-color: var(--atena-hover);
+    border-color: var(--atena-hover);
+}
+
+.nav-item:hover {
+    background: rgba(var(--atena-hover-rgb), 0.25);
+    border-radius: 0.25rem;
+}
+
+.header-title {
+    font-size: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.project-card-background {
+    background-color: var(--atena-primary);
+    width: 100%;
+    height: 100%;
+}
+
+.project-card-body {
+    background-color: rgba(var(--atena-background-darker-rgb), 0.6);
+    border: 1px solid var(--atena-border);
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
+
+@media (max-width: 766px) {
+    .project-card-wrapper {
+        margin-bottom: 1rem;
+    }
+}

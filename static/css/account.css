@@ -1,0 +1,19 @@
+.login-container {
+    background-color: rgba(var(--atena-background-rgb), 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 2rem;
+    min-width: 40%;
+}
+
+#mask {
+    object-fit: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    backdrop-filter: blur(20px);
+    /*opacity: var(--mask-opacity);*/
+    /*background: linear-gradient(0deg, var(--color-background), var(--color-background));*/
+}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Settings{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block header %}
+    <p class="header-title">
+        Settings
+    </p>
+{% endblock %}
+
+{% block content %}
+    <h1 style="padding-top: 1rem; padding-bottom: 1rem;">Settings</h1>
+    <p></p>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group list-group-flush">
+                <a href="{% url 'settings_profile' %}" role="button" class="list-group-item list-group-item-action"><i class="mdi mdi-account" aria-hidden="true" style="font-size: 14px"></i> Profile</a>
+                <a href="{% url 'settings_appearance' %}" role="button" class="list-group-item list-group-item-action active"><i class="mdi mdi-palette" aria-hidden="true" style="font-size: 14px"></i> Appearance</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // get valur from id_theme select
+    let id_theme = document.getElementById("id_theme");
+    let theme = id_theme.value;
+
+    // Add listener to add class to root
+    id_theme.addEventListener("change", function() {
+        theme = id_theme.value;
+        // clean class to blank
+        document.documentElement.className = "";
+        // add class to root
+        document.documentElement.classList.add(theme);
+    });
+</script>
+{% endblock %}
