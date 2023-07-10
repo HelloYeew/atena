@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Projects{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block header %}
+    <p class="header-title">
+        {{ repository.name }}
+    </p>
+{% endblock %}
+
+{% block content %}
+    <h1 style="padding-top: 1rem; padding-bottom: 1rem;">{{ repository.name }}</h1>
+    <p></p>
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"><i class="mdi mdi-home"></i> Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#"><i class="mdi mdi-cog"></i> Settings</a>
+        </li>
+    </ul>
+    <p></p>
+    <div class="row">
+        <div class="col-md-8">
+
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex">
+                <h4>About</h4>
+                <a href="{% url 'apps_edit_repository' repository.slug %}" class="btn btn-sm btn-outline-primary" style="margin-left: auto;"><i class="mdi mdi-pencil" aria-hidden="true" style="font-size: 16px"></i></a>
+            </div>
+            <p>{{ repository.description }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

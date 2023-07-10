@@ -15,7 +15,7 @@
 <style>
     body {
         height: 100vh;
-        background: url("{% static 'img/background/login.jpg' %}") top;
+        background: url("{% static 'img/background/login.jpg' %}") top center;
         background-size: cover;
     }
 </style>
@@ -23,10 +23,10 @@
     <div id="mask"></div>
     <main class="login-container position-absolute top-50 start-50 translate-middle">
         <div class="row">
-            <div class="col-md-5" style="background: url('{% static 'img/background/login.jpg' %}') left; background-size: cover; border-radius: 2rem;">
+            <div class="col-md-6" style="background: url('{% static 'img/background/login.jpg' %}') center center; background-size: cover; border-radius: 2rem;">
 
             </div>
-            <div class="col-md-7" style="padding-left: 2.1rem; padding-top: 2.1rem; padding-bottom: 2.1rem; padding-right: 2.6rem;">
+            <div class="col-md-6" style="padding-left: 2.1rem; padding-top: 2.1rem; padding-bottom: 2.1rem; padding-right: 2.6rem;">
                 <div class="row">
                     {% if messages %}
                         {% for message in messages %}
