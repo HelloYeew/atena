@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Projects{% endblock %}
+{% block title %}{{ repository.name }}{% endblock %}
 
 {% block styles %}
 
@@ -15,14 +15,7 @@
 {% block content %}
     <h1 style="padding-top: 1rem; padding-bottom: 1rem;">{{ repository.name }}</h1>
     <p></p>
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"><i class="mdi mdi-home"></i> Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#"><i class="mdi mdi-cog"></i> Settings</a>
-        </li>
-    </ul>
+    {% include 'apps/repositories/snippets/repository_pills_menu.html' %}
     <p></p>
     <div class="row">
         <div class="col-md-8">
@@ -31,9 +24,19 @@
         <div class="col-md-4">
             <div class="d-flex">
                 <h4>About</h4>
-                <a href="{% url 'apps_edit_repository' repository.slug %}" class="btn btn-sm btn-outline-primary" style="margin-left: auto;"><i class="mdi mdi-pencil" aria-hidden="true" style="font-size: 16px"></i></a>
+                <a href="{% url 'apps_repository_settings' repository.slug %}" class="btn btn-sm btn-outline-primary" style="margin-left: auto;"><i class="mdi mdi-pencil" aria-hidden="true" style="font-size: 16px"></i></a>
             </div>
-            <p>{{ repository.description }}</p>
+            <p class="text-break">{{ repository.description }}</p>
+            <hr>
+            <div class="d-flex">
+                <h4>Members</h4>
+                <a href="#" class="btn btn-sm btn-outline-primary" style="margin-left: auto;"><i class="mdi mdi-pencil" aria-hidden="true" style="font-size: 16px"></i></a>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+            {% for permission in permissions %}
+                <img src="{{ permission.user.profile.avatar.url }}" alt="{{ permission.user.username }}" class="rounded-circle" style="width: 32px; height: 32px;">
+            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

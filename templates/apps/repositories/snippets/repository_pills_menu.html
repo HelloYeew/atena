@@ -1,0 +1,8 @@
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link {% if top_menu_active == 'home' %}active{% endif %}" href="{% url 'apps_repository_detail' repository.slug %}"><i class="mdi mdi-home"></i> Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if top_menu_active == 'settings' %}active{% endif %}" href="{% url 'apps_repository_settings' repository.slug %}"><i class="mdi mdi-cog"></i> Settings</a>
+    </li>
+</ul>

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ repository.name }} > API{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block header %}
+    <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="header-title">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'apps_repository_detail' repository.slug %}" class="header-title">{{ repository.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><div style="font-size: 20px">Settings</div></li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1 style="padding-top: 1rem; padding-bottom: 1rem;">{{ repository.name }}</h1>
+    <p></p>
+    {% include 'apps/repositories/snippets/repository_pills_menu.html' %}
+    <p></p>
+    <div class="row">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'apps/repositories/snippets/settings_side_menu.html' %}
+            </div>
+            <div class="col-md-9">
+                <h2>API Key</h2>
+                <p>API Key is used to authenticate on transaction on the repository using API.</p>
+                <p style="background-color: var(--atena-border); border-radius: 8px; padding: 8px">
+                    <code style="font-size: 20px;">{{ api_key.key }}</code>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

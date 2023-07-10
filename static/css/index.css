@@ -124,6 +124,10 @@ a:hover {
     box-shadow: 0 0 0 3px rgba(var(--atena-border-rgb), 0.5);
 }
 
+hr {
+    border-top-color: var(--atena-primary);
+}
+
 .form-text {
     color: var(--atena-text);
 }
@@ -144,6 +148,12 @@ a:hover {
     background-color: var(--atena-hover);
 }
 
+.nav {
+    --bs-nav-link-color: var(--atena-text)!important;
+    --bs-nav-link-hover-color: var(--atena-hover)!important;
+    --bs-nav-link-disabled-color: var(--atena-disabled)!important;
+}
+
 .navbar-brand {
     color: var(--atena-text);
 }
@@ -162,6 +172,10 @@ a:hover {
 
 .nav-link:hover {
     color: var(--atena-hover);
+}
+
+.nav-link.active {
+    color: var(--atena-background);
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
