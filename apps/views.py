@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
 from apps.forms import RepositoryForm
@@ -44,7 +44,7 @@ def create_repositories(request):
 
 @login_required
 def repository_detail(request, slug):
-    repository = Repository.objects.get(slug=slug)
+    repository = get_object_or_404(Repository, slug=slug)
     return render(request, 'apps/repositories/detail.html', {
         'repository': repository,
         'permissions': repository.permissions.all(),
@@ -54,7 +54,7 @@ def repository_detail(request, slug):
 
 @login_required
 def repository_settings_general(request, slug):
-    repository = Repository.objects.get(slug=slug)
+    repository = get_object_or_404(Repository, slug=slug)
     if request.method == 'POST':
         form = RepositoryForm(request.POST, instance=repository)
         if form.is_valid():
@@ -73,11 +73,13 @@ def repository_settings_general(request, slug):
 
 @login_required
 def repository_settings(request, slug):
+    get_object_or_404(Repository, slug=slug)
     return redirect('apps_repository_settings_general', slug=slug)
 
 
 @login_required
 def repository_settings_api(request, slug):
+    repository = get_object_or_404(Repository, slug=slug)
     if RepositoryAPIKey.objects.filter(repository__slug=slug).exists():
         api_key = RepositoryAPIKey.objects.get(repository__slug=slug)
     else:
@@ -86,7 +88,7 @@ def repository_settings_api(request, slug):
             key=generate_api_key()
         )
     return render(request, 'apps/repositories/settings/api.html', {
-        'repository': Repository.objects.get(slug=slug),
+        'repository': repository,
         'api_key': api_key,
         'top_menu_active': 'settings',
         'settings_active': 'api'
