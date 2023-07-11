@@ -13,7 +13,7 @@ urlpatterns = [
     path('repositories/<slug:slug>/settings/api', views.repository_settings_api, name='apps_repository_settings_api'),
     path('repositories/<slug:slug>/settings/collaborators', views.repository_settings_collaborators, name='apps_repository_settings_collaborators'),
     path('repositories/<slug:slug>/settings/collaborators/add', views.repository_settings_collaborators_add, name='apps_repository_settings_collaborators_add'),
-    path('repositories/<slug:slug>/settings/remove/<int:permission_id>', views.repository_settings_collaborators_remove, name='apps_repository_settings_collaborators_remove'),
+    path('repositories/<slug:slug>/settings/collaborators/remove/<int:permission_id>', views.repository_settings_collaborators_remove, name='apps_repository_settings_collaborators_remove'),
     path('repositories/<slug:slug>/settings/collaborators/<int:permission_id>', views.repository_settings_collaborators_update, name='apps_repository_settings_collaborators_update'),
     path('artifacts/<int:artifact_id>', views.download_artifact, name='apps_download_artifact')
 ]
