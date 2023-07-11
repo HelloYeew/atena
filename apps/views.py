@@ -9,6 +9,7 @@ from apps.models import Repository, RepositoryPermission, RepositoryAPIKey, Repo
 from apps.utils import generate_api_key
 
 
+@login_required
 def home(request):
     return render(request, 'apps/home.html')
 
@@ -46,6 +47,7 @@ def create_repositories(request):
 @login_required
 def repository_detail(request, slug):
     repository = get_object_or_404(Repository, slug=slug)
+    permission = get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
     return render(request, 'apps/repositories/detail.html', {
         'repository': repository,
         'permissions': repository.permissions.all(),
@@ -54,13 +56,17 @@ def repository_detail(request, slug):
         'total_pre_release_count': repository.releases.filter(pre_release=True).count(),
         'total_artifact_count': RepositoryReleaseArtifact.objects.filter(release__repository=repository).count(),
         'total_artifact_size': RepositoryReleaseArtifact.objects.filter(release__repository=repository).aggregate(
-            total_size=models.Sum('size'))['total_size'] or 0
+            total_size=models.Sum('size'))['total_size'] or 0,
+        'permission': permission
     })
 
 
 @login_required
 def repository_settings_general(request, slug):
     repository = get_object_or_404(Repository, slug=slug)
+    permission = get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
+    if not (permission.permission == 'admin' or permission.permission == 'write'):
+        return render(request, '403.html', status=403)
     if request.method == 'POST':
         form = RepositoryForm(request.POST, instance=repository)
         if form.is_valid():
@@ -73,19 +79,27 @@ def repository_settings_general(request, slug):
         'form': form,
         'repository': repository,
         'top_menu_active': 'settings',
-        'settings_active': 'general'
+        'settings_active': 'general',
+        'permission': permission
     })
 
 
 @login_required
 def repository_settings(request, slug):
     get_object_or_404(Repository, slug=slug)
-    return redirect('apps_repository_settings_general', slug=slug)
+    permission = get_object_or_404(RepositoryPermission, repository__slug=slug, user=request.user)
+    if not (permission.permission == 'admin' or permission.permission == 'write'):
+        return render(request, '403.html', status=403)
+    else:
+        return redirect('apps_repository_settings_general', slug=slug)
 
 
 @login_required
 def repository_settings_api(request, slug):
     repository = get_object_or_404(Repository, slug=slug)
+    permission = get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
+    if not (permission.permission == 'admin' or permission.permission == 'write'):
+        return render(request, '403.html', status=403)
     if RepositoryAPIKey.objects.filter(repository__slug=slug).exists():
         api_key = RepositoryAPIKey.objects.get(repository__slug=slug)
     else:
@@ -97,5 +111,6 @@ def repository_settings_api(request, slug):
         'repository': repository,
         'api_key': api_key,
         'top_menu_active': 'settings',
-        'settings_active': 'api'
+        'settings_active': 'api',
+        'permission': permission
     })
