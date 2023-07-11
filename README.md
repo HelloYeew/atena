@@ -1,5 +1,5 @@
-<div align="center">
-  <img src="static/img/atena.png" alt="Atena Saotome" width="300" />
+<div>
+  <img src="static/img/atena.png" alt="Atena Saotome" width="100" />
 </div>
 
 # Atena
