@@ -19,7 +19,45 @@
     <p></p>
     <div class="row">
         <div class="col-md-8">
-
+            <h4>Summary</h4>
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="mdi mdi-file-upload" aria-hidden="true" style="font-size: 35px"></i></h5>
+                            <h5 class="card-title">Release Count</h5>
+                            <p class="card-text">{{ total_release_count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="mdi mdi-file-upload-outline" aria-hidden="true" style="font-size: 35px"></i></h5>
+                            <h5 class="card-title">Pre-Release Count</h5>
+                            <p class="card-text">{{ total_pre_release_count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="mdi mdi-file-sync" aria-hidden="true" style="font-size: 35px"></i></h5>
+                            <h5 class="card-title">Total Artifact Count</h5>
+                            <p class="card-text">{{ total_artifact_count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="mdi mdi-sigma" aria-hidden="true" style="font-size: 35px"></i></h5>
+                            <h5 class="card-title">Total Artifact Size</h5>
+                            <p class="card-text">{{ total_artifact_size|filesizeformat }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
             <div class="d-flex">

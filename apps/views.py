@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import models
 from django.shortcuts import render, redirect, get_object_or_404
 from slugify import slugify
 
 from apps.forms import RepositoryForm
-from apps.models import Repository, RepositoryPermission, RepositoryAPIKey
+from apps.models import Repository, RepositoryPermission, RepositoryAPIKey, RepositoryReleaseArtifact
 from apps.utils import generate_api_key
 
 
@@ -48,7 +49,12 @@ def repository_detail(request, slug):
     return render(request, 'apps/repositories/detail.html', {
         'repository': repository,
         'permissions': repository.permissions.all(),
-        'top_menu_active': 'home'
+        'top_menu_active': 'home',
+        'total_release_count': repository.releases.count(),
+        'total_pre_release_count': repository.releases.filter(pre_release=True).count(),
+        'total_artifact_count': RepositoryReleaseArtifact.objects.filter(release__repository=repository).count(),
+        'total_artifact_size': RepositoryReleaseArtifact.objects.filter(release__repository=repository).aggregate(
+            total_size=models.Sum('size'))['total_size'] or 0
     })
 
 
