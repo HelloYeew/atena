@@ -5,6 +5,9 @@ from PIL import Image
 
 THEME_SETTINGS = (
     ('', 'Atena Default'),
+    ('asuna', 'Yuuki Asuna (Day)'),
+    ('asuna-dark', 'Yuuki Asuna (Night)'),
+    ('suisei', 'Hoshimachi Suisei (Day)')
 )
 
 
