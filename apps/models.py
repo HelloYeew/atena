@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django_cryptography.fields import encrypt
 
 
 class Repository(models.Model):
@@ -41,17 +40,20 @@ class RepositoryPermission(models.Model):
 class RepositoryAPIKey(models.Model):
     repository = models.ForeignKey(Repository, on_delete=models.CASCADE, related_name='api_keys')
     key = models.CharField(max_length=64, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='api_keys')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.repository} API Key'
+        return f'{self.repository} API Key - {self.user}'
 
 
 class RepositoryRelease(models.Model):
     repository = models.ForeignKey(Repository, on_delete=models.CASCADE, related_name='releases')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='releases')
     version = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     pre_release = models.BooleanField(default=False)
 
     def __str__(self):
@@ -62,10 +64,12 @@ class RepositoryReleaseArtifact(models.Model):
     release = models.ForeignKey(RepositoryRelease, on_delete=models.CASCADE, related_name='artifacts')
     artifact_key = models.CharField(max_length=1000)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='artifacts')
     size = models.BigIntegerField()
 
     def __str__(self):
         return f'{self.release} - {self.release.repository.name}'
 
-    def get_artifact_key_list(self):
-        return self.artifact_key.split(',')
+    def get_artifact_name(self):
+        return self.artifact_key.split('/')[-1]

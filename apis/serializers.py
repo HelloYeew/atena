@@ -22,6 +22,12 @@ class UploadArtifactSerializer(serializers.Serializer):
             raise serializers.ValidationError('Invalid key')
         else:
             attrs['repository'] = key_filter.first().repository
+            attrs['user'] = key_filter.first().user
+        user_repository_permission = attrs['repository'].permissions.filter(user=attrs['user'])
+        if not user_repository_permission.exists():
+            raise serializers.ValidationError('You do not have permission to upload artifacts to this repository')
+        elif user_repository_permission.first().permission != 'write' and user_repository_permission.first().permission != 'admin':
+            raise serializers.ValidationError('You do not have permission to upload artifacts to this repository')
         # File cannot be exceeded 200MB
         if attrs['artifact'].size > 200000000:
             raise serializers.ValidationError('File size cannot exceed 200MB')

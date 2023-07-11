@@ -3,9 +3,11 @@
         <a class="nav-link {% if top_menu_active == 'home' %}active{% endif %}" href="{% url 'apps_repository_detail' repository.slug %}"><i class="mdi mdi-home"></i> Home</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link disabled" href="#" aria-disabled="true"><i class="mdi mdi-file-multiple"></i> Releases</a>
+        <a class="nav-link {% if top_menu_active == 'release' %}active{% endif %}" href="{% url 'apps_repository_releases' repository.slug %}"><i class="mdi mdi-file-multiple"></i> Releases</a>
     </li>
+    {% if permission.permission == 'write' or permission.permission == 'admin' %}
     <li class="nav-item">
         <a class="nav-link {% if top_menu_active == 'settings' %}active{% endif %}" href="{% url 'apps_repository_settings' repository.slug %}"><i class="mdi mdi-cog"></i> Settings</a>
     </li>
+    {% endif %}
 </ul>

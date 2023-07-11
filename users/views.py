@@ -1,7 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import views as auth_views
+from django.views import static
+from django.views.decorators.http import require_GET
 
 from users.forms import UserCreationForms, UserSettingsForm, ProfileSettingsForm
 
@@ -54,3 +57,20 @@ def profile_settings(request):
     else:
         form = ProfileSettingsForm(instance=request.user.profile)
     return render(request, 'users/settings/profile.html', {'form': form})
+
+
+def favicon(request):
+    return static.serve(request, 'favicon.ico', document_root='static')
+
+
+@require_GET
+def robots_txt(request):
+    """
+    Return the robots.txt file to tell the search engine crawlers not to index the site.
+    """
+    lines = [
+        # Disallowed all
+        "User-Agent: *",
+        "Disallow: /"
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")

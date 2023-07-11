@@ -51,9 +51,18 @@
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="mdi mdi-sigma" aria-hidden="true" style="font-size: 35px"></i></h5>
+                            <h5 class="card-title"><i class="mdi mdi-text-box-multiple" aria-hidden="true" style="font-size: 35px"></i></h5>
                             <h5 class="card-title">Total Artifact Size</h5>
                             <p class="card-text">{{ total_artifact_size|filesizeformat }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="mdi mdi-clock" aria-hidden="true" style="font-size: 35px"></i></h5>
+                            <h5 class="card-title">Latest Update</h5>
+                            <p class="card-text">{{ latest_update|timesince }} ago</p>
                         </div>
                     </div>
                 </div>

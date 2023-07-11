@@ -23,6 +23,8 @@ from django.urls import path, include
 from users import views as users_views
 
 urlpatterns = [
+    path('favicon.ico', users_views.favicon, name='favicon'),
+    path('robots.txt', users_views.robots_txt, name='robots'),
     path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
     path('admin/', admin.site.urls),
     path('signup/', users_views.signup, name='signup'),

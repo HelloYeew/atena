@@ -229,3 +229,7 @@ hr {
         margin-bottom: 1rem;
     }
 }
+
+.bg-primary {
+    background-color: var(--atena-primary) !important;
+}

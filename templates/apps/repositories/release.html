@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load get_artifact %}
+
+{% block title %}{{ repository.name }} Release{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block header %}
+    <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="header-title">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'apps_repository_detail' repository.slug %}" class="header-title">{{ repository.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><div style="font-size: 20px">Releases</div></li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1 style="padding-top: 1rem; padding-bottom: 1rem;">{{ repository.name }}</h1>
+    <p></p>
+    {% include 'apps/repositories/snippets/repository_pills_menu.html' %}
+    <p></p>
+    {% for release in releases %}
+    <div class="row" style="margin-bottom: 1rem;">
+        <div class="col-md-3">
+            <p>{{ release.created_at|date:"M d, Y H:i" }}</p>
+            <div class="d-flex mb-2">
+                <img src="{{ release.user.profile.avatar.url }}" alt="{{ release.user.username }}" class="rounded-circle" style="width: 25px; height: 25px;">
+                <span class="ms-1">{{ release.user.username }}</span>
+            </div>
+            {% if release.pre_release %}
+            <p><span class="badge rounded-pill bg-primary">Pre-Release</span></p>
+            {% endif %}
+        </div>
+        <div class="col-md-9">
+            <div class="card" style="width: 100%;">
+                <div class="card-body">
+                    <h3 class="card-title">{{ release.version }}</h3>
+                    <h6 class="card-subtitle mb-2 text-muted">Last updated {{ release.updated_at|date:"M d, Y H:i" }}</h6>
+                    {% if release.description %}
+                    <p class="card-text">{{ release.description }}</p>
+                    {% else %}
+                        <p class="card-text"><i>No description provided.</i></p>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Artifacts</h5>
+                    {% with artifact=release.id|get_artifact %}
+                        <h6 class="card-subtitle mb-2 text-muted">Total: {{ artifact.total_artifact_count }} | Size: {{ artifact.total_artifact_size|filesizeformat }}</h6>
+                        <div class="card-body">
+                            {% for artifact_object in artifact.artifacts %}
+                                <div class="d-flex">
+                                    <i class="mdi mdi-file" aria-hidden="true" style="font-size: 15px"></i>
+                                    <a href="{{ artifact_object.url }}">{{ artifact_object.name }}</a>
+                                    <span class="ms-auto">{{ artifact_object.size|filesizeformat }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

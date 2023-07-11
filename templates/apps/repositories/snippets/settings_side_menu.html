@@ -1,4 +1,7 @@
 <div class="list-group list-group-flush">
     <a href="{% url 'apps_repository_settings_general' repository.slug %}" role="button" class="list-group-item list-group-item-action {% if settings_active == 'general' %}active{% endif %}"><i class="mdi mdi-cog" aria-hidden="true" style="font-size: 14px"></i> General</a>
     <a href="{% url 'apps_repository_settings_api' repository.slug %}" role="button" class="list-group-item list-group-item-action {% if settings_active == 'api' %}active{% endif %}"><i class="mdi mdi-key" aria-hidden="true" style="font-size: 14px"></i> API Key</a>
+    {% if permission.permission == 'admin' %}
+    <a href="{% url 'apps_repository_settings_collaborators' repository.slug %}" role="button" class="list-group-item list-group-item-action {% if settings_active == 'collaborators' %}active{% endif %}"><i class="mdi mdi-account-multiple" aria-hidden="true" style="font-size: 14px"></i> Collaborators</a>
+    {% endif %}
 </div>

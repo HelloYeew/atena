@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ repository.name }} > Collaborator{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block header %}
+    <div style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb" class="header-title">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'apps_repository_detail' repository.slug %}" class="header-title">{{ repository.name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><div style="font-size: 20px">Settings</div></li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h1 style="padding-top: 1rem; padding-bottom: 1rem;">{{ repository.name }}</h1>
+    <p></p>
+    {% include 'apps/repositories/snippets/repository_pills_menu.html' %}
+    <p></p>
+    <div class="row">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'apps/repositories/snippets/settings_side_menu.html' %}
+            </div>
+            <div class="col-md-9">
+                <h2>Collaborators</h2>
+                <p></p>
+                <a href="{% url 'apps_repository_settings_collaborators_add' repository.slug %}" class="btn btn-primary btn-sm"><i class="mdi mdi-account-plus" aria-hidden="true" style="font-size: 15px"></i> Add collaborator</a>
+                <p></p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Permission</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for permisssion_object in permission_list %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><img src="{{ permisssion_object.user.profile.avatar.url }}" style="width: 30px; height: 30px; border-radius: 50%;" alt="{{ permisssion_object.user.username }}"> {{ permisssion_object.user.username }}</td>
+                            <td>{{ permisssion_object.permission }}</td>
+                            <td>
+                                <a href="{% url 'apps_repository_settings_collaborators_update' repository.slug permisssion_object.id %}" class="btn btn-primary btn-sm {% if permisssion_object.user == repository.created_by %}disabled{% endif %}" {% if permisssion_object.user == repository.created_by %}aria-disabled="true" {% endif %}><i class="mdi mdi-pencil" aria-hidden="true" style="font-size: 15px"></i> Update</a>
+                                <a href="{% url 'apps_repository_settings_collaborators_remove' repository.slug permisssion_object.id %}" class="btn btn-danger btn-sm {% if permisssion_object.user == repository.created_by %}disabled{% endif %}" {% if permisssion_object.user == repository.created_by %}aria-disabled="true" {% endif %}><i class="mdi mdi-account-remove" aria-hidden="true" style="font-size: 15px"></i> Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

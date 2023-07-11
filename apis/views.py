@@ -48,7 +48,8 @@ class UploadArtifact(APIView):
                 repository=payload.validated_data['repository'],
                 version=payload.validated_data['version'],
                 description=payload.validated_data['description'] if 'description' in payload.validated_data else '',
-                pre_release=payload.validated_data['pre_release']
+                pre_release=payload.validated_data['pre_release'],
+                user=payload.validated_data['user']
             )
             total_size = 0
             for artifact in request.FILES.getlist('artifact'):
@@ -56,7 +57,8 @@ class UploadArtifact(APIView):
                 RepositoryReleaseArtifact.objects.create(
                     release=release,
                     artifact_key=artifact_key,
-                    size=artifact.size
+                    size=artifact.size,
+                    user=payload.validated_data['user']
                 )
                 total_size += artifact.size
                 s3_client.put_object(
