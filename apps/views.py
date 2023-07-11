@@ -16,23 +16,29 @@ S3_BUCKET_NAME = config('S3_BUCKET_NAME', default='')
 s3_client = get_s3_client()
 
 
-@login_required
 def home(request):
-    permission = RepositoryPermission.objects.filter(user=request.user).order_by('-repository__updated_at')
-    repository_list = []
-    for permission_object in permission:
-        repository_list.append(permission_object.repository)
-    return render(request, 'apps/home.html', {
-        'repositories': repository_list[:3]
-    })
+    if request.user.is_authenticated:
+        permission = RepositoryPermission.objects.filter(user=request.user).order_by('-repository__updated_at')
+        repository_list = []
+        for permission_object in permission:
+            repository_list.append(permission_object.repository)
+        return render(request, 'apps/home.html', {
+            'repositories': repository_list[:3]
+        })
+    else:
+        return redirect('apps_repositories')
 
 
-@login_required()
 def repositories(request):
-    permission = RepositoryPermission.objects.filter(user=request.user).order_by('-repository__updated_at')
     repository_list = []
-    for permission_object in permission:
-        repository_list.append(permission_object.repository)
+    if request.user.is_authenticated:
+        permission = RepositoryPermission.objects.filter(user=request.user).order_by('-repository__updated_at')
+        for permission_object in permission:
+            repository_list.append(permission_object.repository)
+    public_repository_list = Repository.objects.filter(public=True).order_by('-updated_at')
+    for repository in public_repository_list:
+        if repository not in repository_list:
+            repository_list.append(repository)
     return render(request, 'apps/repositories/list.html', {
         'repositories': repository_list
     })
@@ -43,6 +49,11 @@ def create_repositories(request):
     if request.method == 'POST':
         form = RepositoryForm(request.POST)
         if form.is_valid():
+            if Repository.objects.filter(name=form.instance.name).exists():
+                form.add_error('name', 'The repository name already exists.')
+                return render(request, 'apps/repositories/create.html', {
+                    'form': form
+                })
             repository_object = form.instance
             repository_object.created_by = request.user
             repository_object.slug = slugify(repository_object.name)
@@ -61,22 +72,60 @@ def create_repositories(request):
     })
 
 
-@login_required
 def repository_detail(request, slug):
-    repository = get_object_or_404(Repository, slug=slug)
-    permission = get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
-    return render(request, 'apps/repositories/detail.html', {
-        'repository': repository,
-        'permissions': repository.permissions.all(),
-        'top_menu_active': 'home',
-        'total_release_count': repository.releases.count(),
-        'total_pre_release_count': repository.releases.filter(pre_release=True).count(),
-        'total_artifact_count': RepositoryReleaseArtifact.objects.filter(release__repository=repository).count(),
-        'total_artifact_size': RepositoryReleaseArtifact.objects.filter(release__repository=repository).aggregate(
-            total_size=models.Sum('size'))['total_size'] or 0,
-        'latest_update': repository.updated_at,
-        'permission': permission
-    })
+    repository = Repository.objects.filter(slug=slug)
+    if repository.exists():
+        repository = repository.first()
+    else:
+        return render(request, '404.html', status=404)
+    if request.user.is_authenticated:
+        permission = RepositoryPermission.objects.filter(repository=repository, user=request.user)
+        if permission.exists():
+            permission = permission.first()
+        else:
+            permission = None
+    else:
+        permission = None
+    if repository.public or (not repository.public and permission):
+        return render(request, 'apps/repositories/detail.html', {
+            'repository': repository,
+            'permissions': repository.permissions.all(),
+            'top_menu_active': 'home',
+            'total_release_count': repository.releases.count(),
+            'total_pre_release_count': repository.releases.filter(pre_release=True).count(),
+            'total_artifact_count': RepositoryReleaseArtifact.objects.filter(release__repository=repository).count(),
+            'total_artifact_size': RepositoryReleaseArtifact.objects.filter(release__repository=repository).aggregate(
+                total_size=models.Sum('size'))['total_size'] or 0,
+            'latest_update': repository.updated_at,
+            'permission': permission
+        })
+    else:
+        return render(request, '404.html', status=404)
+
+
+def repository_releases(request, slug):
+    repository = Repository.objects.filter(slug=slug)
+    if repository.exists():
+        repository = repository.first()
+    else:
+        return render(request, '404.html', status=404)
+    if request.user.is_authenticated:
+        permission = RepositoryPermission.objects.filter(repository=repository, user=request.user)
+        if permission.exists():
+            permission = permission.first()
+        else:
+            permission = None
+    else:
+        permission = None
+    if repository.public or (not repository.public and permission):
+        return render(request, 'apps/repositories/release.html', {
+            'repository': repository,
+            'releases': RepositoryRelease.objects.filter(repository=repository).order_by('-created_at'),
+            'top_menu_active': 'release',
+            'permission': permission
+        })
+    else:
+        return render(request, '404.html', status=404)
 
 
 @login_required
@@ -90,7 +139,7 @@ def repository_settings_general(request, slug):
         if form.is_valid():
             form.save()
             messages.success(request, f'Updated repository successfully!')
-            return redirect('apps_repository_detail', slug=repository.slug)
+            return redirect('apps_repository_settings_general', slug=repository.slug)
     else:
         form = RepositoryForm(instance=repository)
     return render(request, 'apps/repositories/settings/general.html', {
@@ -98,18 +147,6 @@ def repository_settings_general(request, slug):
         'repository': repository,
         'top_menu_active': 'settings',
         'settings_active': 'general',
-        'permission': permission
-    })
-
-
-@login_required
-def repository_releases(request, slug):
-    repository = get_object_or_404(Repository, slug=slug)
-    permission = get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
-    return render(request, 'apps/repositories/release.html', {
-        'repository': repository,
-        'releases': RepositoryRelease.objects.filter(repository=repository).order_by('-created_at'),
-        'top_menu_active': 'release',
         'permission': permission
     })
 

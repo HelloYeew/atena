@@ -287,3 +287,8 @@ hr {
 .bg-primary {
     background-color: var(--atena-primary) !important;
 }
+
+.card {
+    border: 1px solid var(--atena-border);
+    border-radius: 0.25rem;
+}

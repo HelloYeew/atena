@@ -10,6 +10,7 @@ class Repository(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='repositories')
     slug = models.SlugField(max_length=255, unique=True, blank=True)
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.name}'

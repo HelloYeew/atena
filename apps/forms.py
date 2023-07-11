@@ -19,10 +19,15 @@ class RepositoryForm(forms.ModelForm):
         help_text='The description of the repository.',
         required=False
     )
+    public = forms.BooleanField(
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        help_text='Allow anyone to view this repository.',
+        required=False
+    )
 
     class Meta:
         model = Repository
-        fields = ('name', 'url', 'description')
+        fields = ('name', 'url', 'description', 'public')
 
 
 class RepositoryPermissionForm(forms.Form):
