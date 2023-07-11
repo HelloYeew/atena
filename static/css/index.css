@@ -51,7 +51,7 @@
     --atena-translucent: rgba(101, 76, 79, 0.17);
 }
 
-.asuna-night * {
+.asuna-dark * {
     --atena-background: #1e1d1d;
     --atena-background-rgb: 30, 29, 29;
     --atena-background-darker: #645757;
