@@ -105,11 +105,12 @@ def repository_settings_general(request, slug):
 @login_required
 def repository_releases(request, slug):
     repository = get_object_or_404(Repository, slug=slug)
-    get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
+    permission = get_object_or_404(RepositoryPermission, repository=repository, user=request.user)
     return render(request, 'apps/repositories/release.html', {
         'repository': repository,
         'releases': RepositoryRelease.objects.filter(repository=repository).order_by('-created_at'),
-        'top_menu_active': 'release'
+        'top_menu_active': 'release',
+        'permission': permission
     })
 
 
