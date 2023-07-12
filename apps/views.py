@@ -279,10 +279,13 @@ def repository_settings_collaborators_update(request, slug, permission_id):
     })
 
 
-@login_required
 def download_artifact(request, artifact_id):
     artifact = get_object_or_404(RepositoryReleaseArtifact, id=artifact_id)
-    get_object_or_404(RepositoryPermission, repository=artifact.release.repository, user=request.user)
+    repository = artifact.release.repository
+    if not repository.public:
+        permission = RepositoryPermission.objects.filter(repository=repository, user=request.user)
+        if not permission.exists():
+            return render(request, '404.html', status=404)
     file = s3_client.get_object(Bucket=S3_BUCKET_NAME, Key=artifact.artifact_key)
     response = HttpResponse(file['Body'].read())
     response['Content-Disposition'] = 'attachment; filename=' + artifact.get_artifact_name()
