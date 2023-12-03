@@ -7,16 +7,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = "^4.2.3"
+django = "^4.2.7"
 python-decouple = "^3.8"
-django-admin-interface = "^0.26.0"
-django-crispy-forms = "^2.0"
-crispy-bootstrap5 = "^0.7"
-gunicorn = "^20.1.0"
-psycopg2-binary = "^2.9.6"
+django-admin-interface = "^0.26.1"
+django-crispy-forms = "^2.1"
+crispy-bootstrap5 = "^2023.10"
+gunicorn = "^21.2.0"
+psycopg2-binary = "^2.9.9"
 django-cryptography = "^1.1"
 djangorestframework = "^3.14.0"
-boto3 = "^1.28.1"
+boto3 = "^1.33.6"
 
 
 [build-system]
