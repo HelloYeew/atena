@@ -188,6 +188,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # https://docs.djangoproject.com/en/4.2/topics/logging/
 
 LOGS_FILE = f'logs/atena.log'
+LOGS_FILE_MAX_SIZE = 1024 * 1024 * 10  # 10 MB
+LOGS_FILE_MAX_BACKUPS = 20
 
 # Check if logs directory exists, if not create it
 if not os.path.exists('logs'):
@@ -210,7 +212,7 @@ LOGGING = {
     },
     'formatters': {
         'standard': {
-            'format': '[%(asctime)s] {%(module)s} [%(levelname)s] - %(message)s',
+            'format': '[%(asctime)s] {%(name)s:%(lineno)s} [%(levelname)s] - %(message)s',
             'datefmt': '%d-%m-%Y %H:%M:%S %z',
         },
         "django.server": {
@@ -225,13 +227,23 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
-        'file': {
+        'production_log_file': {
             'level': 'INFO' if not DEBUG else 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': LOGS_FILE,
             'formatter': 'standard',
             # Clean log after server restart if DEBUG is True
             'mode': 'w' if DEBUG else 'a',
+        },
+        'debug_log_file': {
+            'level': 'INFO' if not DEBUG else 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGS_FILE,
+            'maxBytes': LOGS_FILE_MAX_SIZE,
+            'backupCount': LOGS_FILE_MAX_BACKUPS,
+            'formatter': 'standard',
+            # Clean log after server restart if DEBUG is True
+            'mode': 'w' if DEBUG else 'a'
         },
         "django.server": {
             "level": "INFO",
@@ -246,18 +258,29 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console', 'debug_log_file'],
+            'level': 'INFO' if not DEBUG else 'DEBUG',
+            'propagate': True
+        } if DEBUG else {
+            'handlers': ['console', 'production_log_file'],
             'level': 'INFO' if not DEBUG else 'DEBUG',
             'propagate': True
         },
         "django": {
-            "handlers": ["console", "mail_admins", 'file'],
+            "handlers": ["console", "mail_admins", 'debug_log_file'],
+            "level": "INFO",
+        } if DEBUG else {
+            "handlers": ["console", "mail_admins", 'production_log_file'],
             "level": "INFO",
         },
         "django.server": {
-            "handlers": ["django.server", 'file'],
+            "handlers": ["django.server", 'debug_log_file'],
             "level": "INFO",
             "propagate": False,
-        },
+        } if DEBUG else {
+            "handlers": ["django.server", 'production_log_file'],
+            "level": "INFO",
+            "propagate": False,
+        }
     }
 }
