@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import django_cryptography.fields
 
 
 class Migration(migrations.Migration):
@@ -16,7 +15,7 @@ class Migration(migrations.Migration):
             name='RepositoryAPIKey',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('key', django_cryptography.fields.encrypt(models.CharField(max_length=32, unique=True))),
+                ('key', models.CharField(max_length=32, unique=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('repository', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='api_keys', to='apps.repository')),
             ],
